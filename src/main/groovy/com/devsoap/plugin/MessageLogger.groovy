@@ -17,7 +17,8 @@ package com.devsoap.plugin
 
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.runtime.StackTraceUtils
-import org.gradle.util.SingleMessageLogger
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 
 /**
  * Logger for displaying (nagging) messages to user
@@ -27,6 +28,7 @@ import org.gradle.util.SingleMessageLogger
  */
 @CompileStatic
 class MessageLogger {
+    private static final Logger LOGGER = Logging.getLogger("VaadinPlugin");
 
     static String getDeprecationMessage() {
         'has been deprecated and is scheduled to be removed in Gradle Vaadin Plugin 2.0'
@@ -41,7 +43,7 @@ class MessageLogger {
      *      Further details about where the property has been moved
      */
     static nagUserOfDiscontinuedProperty(String propertyName, String advice) {
-        SingleMessageLogger.nagUserWith("The $propertyName property ${getDeprecationMessage()}. ", advice)
+        LOGGER.warn("The $propertyName property ${getDeprecationMessage()}. $advice")
     }
 
     /**
@@ -54,15 +56,5 @@ class MessageLogger {
         nagUserOfDiscontinuedProperty(
                 StackTraceUtils.sanitize(throwable).stackTrace[1].methodName,
                 throwable.message)
-    }
-
-    /**
-     * Nag to user with a custom message
-     *
-     * @param advice
-     *      the message to show the user
-     */
-    static nag(String advice) {
-        SingleMessageLogger.nagUserWith(advice, null)
     }
 }
