@@ -281,13 +281,6 @@ class GradleVaadinPlugin implements Plugin<Project> {
                     project.logger.info('Spring boot present, not applying WAR plugin by default.')
                 }
             }
-
-            // Remove configurations if the plugin shouldn't manage them
-            if ( !p.vaadin.manageDependencies ) {
-                p.configurations.removeAll({ Configuration conf ->
-                   conf.name.startsWith('vaadin-')
-                })
-            }
         }
     }
 
