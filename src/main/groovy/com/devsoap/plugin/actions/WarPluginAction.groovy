@@ -37,17 +37,6 @@ class WarPluginAction extends PluginAction {
     }
 
     @Override
-    void apply(Project project) {
-        super.apply(project)
-        if (!SpringBootAction.isSpringBootPresent(project)) {
-            // Apply the WAR plugin if spring boot is not present
-            project.plugins.apply(WarPlugin)
-        } else {
-            project.logger.info('Spring boot present, not applying WAR plugin by default.')
-        }
-    }
-
-    @Override
     protected void execute(Project project) {
         super.execute(project)
         War war = (War) project.tasks.getByName(pluginId)

@@ -273,6 +273,14 @@ class GradleVaadinPlugin implements Plugin<Project> {
                         'apply an older version of the plugin.')
                 throw new InvalidUserDataException('Unsupported Vaadin version.')
             }
+            if (p.vaadin.applyWarPlugin) {
+                if (!SpringBootAction.isSpringBootPresent(p)) {
+                    // Apply the WAR plugin if spring boot is not present
+                    project.plugins.apply(WarPlugin)
+                } else {
+                    project.logger.info('Spring boot present, not applying WAR plugin by default.')
+                }
+            }
 
             // Remove configurations if the plugin shouldn't manage them
             if ( !p.vaadin.manageDependencies ) {

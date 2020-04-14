@@ -37,6 +37,7 @@ class VaadinPluginExtension {
     private final Property<String> version
     private final Property<Boolean> manageDependencies
     private final Property<Boolean> manageRepositories
+    private final Property<Boolean> applyWarPlugin
     private final Property<SourceDirectorySet> mainSourceSet
     private final Property<SourceDirectorySet> mainTestSourceSet
     private final Property<Boolean> push
@@ -51,6 +52,7 @@ class VaadinPluginExtension {
         version = project.objects.property(String)
         manageDependencies = project.objects.property(Boolean)
         manageRepositories = project.objects.property(Boolean)
+        applyWarPlugin = project.objects.property(Boolean)
         mainSourceSet = project.objects.property(SourceDirectorySet)
         mainTestSourceSet = project.objects.property(SourceDirectorySet)
         push = project.objects.property(Boolean)
@@ -60,6 +62,7 @@ class VaadinPluginExtension {
         version.set(null)
         manageDependencies.set(true)
         manageRepositories.set(true)
+        applyWarPlugin.set(true)
         mainSourceSet.set(null)
         mainTestSourceSet.set(null)
         push.set(false)
@@ -118,6 +121,20 @@ class VaadinPluginExtension {
      */
     void setManageRepositories(Boolean enabled) {
         manageRepositories.set(enabled)
+    }
+
+    /**
+     * Should the plugin apply War plugin to project
+     */
+    Boolean getApplyWarPlugin() {
+        applyWarPlugin.get()
+    }
+
+    /**
+     * Should the plugin apply War plugin to project
+     */
+    void setApplyWarPlugin(Boolean enabled) {
+        applyWarPlugin.set(enabled)
     }
 
     /**
