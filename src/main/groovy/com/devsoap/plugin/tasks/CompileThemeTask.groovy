@@ -242,6 +242,7 @@ class CompileThemeTask extends DefaultTask {
 
             def start = System.currentTimeMillis()
 
+            def shouldAnalyzeLogsForErrors = true
             Process process
             switch (project.vaadinThemeCompile.compiler) {
                 case VAADIN_COMPILER:
@@ -252,6 +253,8 @@ class CompileThemeTask extends DefaultTask {
                     } else {
                         process = executeVaadinSassCompiler(project, theme, targetCss)
                     }
+                    // Vaadin Saas compiler set non 0 exit code in case of errors found
+                    shouldAnalyzeLogsForErrors = false
                     break
                 case COMPASS_COMPILER:
                     process = executeCompassSassCompiler(project, gemsDir, unpackedThemesDir, dir)
@@ -265,13 +268,15 @@ class CompileThemeTask extends DefaultTask {
             }
 
             boolean failed = false
-            Util.logProcess(project, process, 'theme-compile.log') { String line ->
-                if ( line.contains('error') ) {
-                    project.logger.error(line)
-                    failed = true
-                    return false
+            if (shouldAnalyzeLogsForErrors) {
+                Util.logProcess(project, process, 'theme-compile.log') { String line ->
+                    if (line.contains('error')) {
+                        project.logger.error(line)
+                        failed = true
+                        return false
+                    }
+                    true
                 }
-                true
             }
 
             int result = process.waitFor()
